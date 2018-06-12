@@ -26,21 +26,36 @@ class App extends Component {
     this.resetData = this.resetData.bind(this);
     this.byYear = this.byYear.bind(this);
     this.deleteBuyer = this.deleteBuyer.bind(this);
+    this.baseUrl = 'http://joes-autos.herokuapp.com/api'
   }
 
   getVehicles() {
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get(this.baseUrl + '/vehicles').then(response => {
+     
+      this.setState({vehiclesToDisplay:response.data})
+      toast.success('worked')
+    }).catch(err =>{toast.error('oops! something went wrong when fetching vehicles')})
   }
 
   getPotentialBuyers() {
     // axios (GET)
     // setState with response -> buyersToDisplay
+    axios.get( `${this.baseUrl}/buyers`).then(response => {
+      this.setState({buyersToDisplay: response.data})
+      toast.success('i think you are finished with this')
+    }).catch('dummy, do it right this time')
   }
 
   sellCar(id) {
     // axios (DELETE)
     // setState with response -> vehiclesToDisplay
+    axios.delete(`${this.baseUrl}/vehicles/${id}`).then(response => {
+     this.setState({vehiclesToDisplay: response.data.vehicles})
+    }).catch(err =>{
+      toast.error('this didnt delete')
+    })
   }
 
   filterByMake() {
@@ -48,6 +63,10 @@ class App extends Component {
 
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get(`${this.baseUrl}/vehicles?make=${make}`).then(response => {
+      this.setState({vehiclesToDisplay: response.data})
+      toast.success('success')
+    }).catch(err => {toast.error('this does not work')})
   }
 
   filterByColor() {
@@ -55,11 +74,22 @@ class App extends Component {
 
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get(`${this.baseUrl}/vehicles?color=${color}`).then(response => {
+      this.setState({vehiclesToDisplay: response.data})
+      toast.success('success')
+    }).catch(err => {
+      toast.error('not working')
+    })
   }
 
   updatePrice(priceChange, id) {
     // axios (PUT)
     // setState with response -> vehiclesToDisplay
+    axios.put(`${this.baseUrl}/vehicles/${id}/${priceChange}`).then(response => {
+      
+      this.setState({vehiclesToDisplay:response.data.vehicles})
+    }).catch(err => {
+      toast.error('could not update price')}) 
   }
 
   addCar() {
@@ -73,6 +103,11 @@ class App extends Component {
 
     // axios (POST)
     // setState with response -> vehiclesToDisplay
+    axios.post(`${this.baseUrl}/vehicles`, newCar).then(response => {
+     this.setState({vehiclesToDisplay: response.data.vehicles})
+    }).catch(err => {
+      toast.error('error adding new car')
+    })
   }
 
   addBuyer() {
@@ -84,11 +119,23 @@ class App extends Component {
 
     //axios (POST)
     // setState with response -> buyersToDisplay
+    axios.post(`${this.baseUrl}/buyers`, newBuyer).then(response => {
+      this.setState({buyersToDisplay:response.data.buyers})
+      toast.success('this is working correctly')
+    }).catch(err => {
+      toast.error('find the error sucka')
+    })
   }
 
   deleteBuyer(id) {
     // axios (DELETE)
     //setState with response -> buyersToDisplay
+    axios.delete(`${this.baseUrl}/vehicles/${id}`).then(response => {
+      this.setState({buyersToDisplay: response.data.vehicles})
+      toast.success('this is actually working dumbass')
+    }).catch(err => {
+      toast.error('you suck fix this')
+    })
   }
 
   nameSearch() {
@@ -96,6 +143,12 @@ class App extends Component {
 
     // axios (GET)
     // setState with response -> buyersToDisplay
+    axios.get(`${this.baseUrl}/buyers?name=${searchLetters}`).then(response => {
+      this.setState({buyersToDisplay: response.data})
+      toast.success('you figured this one out bitch!!!')
+    }).catch(err => {
+      toast.error('you like cock')
+    })
   }
 
   byYear() {
@@ -103,6 +156,12 @@ class App extends Component {
 
     // axios (GET)
     // setState with response -> vehiclesToDisplay
+    axios.get(`${this.baseUrl}/vehicles?year=${year}`).then(response => {
+      this.setState({vehiclesToDisplay: response.data})
+      toast.success('you are finally starting to understand something!')
+    }).catch(err => {
+      toast.error('try again derelict')
+    })
   }
 
   // Do not edit the code below
